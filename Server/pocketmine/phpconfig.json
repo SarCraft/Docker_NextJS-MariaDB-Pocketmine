@@ -1,0 +1,7 @@
+{
+    "include": [
+      "/Foxin/APIpmmp/PocketMine-MP/src/**/*.php",
+      "/Foxin/APIpmmp/PocketMine-MP/vendor/**/*.php",
+      "/Foxin/APIpmmp/PocketMine-MP/resources/**/*.php"
+    ]
+  }

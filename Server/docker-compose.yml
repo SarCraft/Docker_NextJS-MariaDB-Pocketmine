@@ -1,0 +1,53 @@
+services:
+  pocketmine:
+    build: 
+      context: ./pocketmine
+    image: server
+    container_name: pocketmine-server
+    ports:
+      - "19132:19132/udp"
+    environment:
+      POSTGRES_HOST: postgres
+      POSTGRES_PORT: 5432
+      POSTGRES_DB: mc_server
+      POSTGRES_USER: mc_user
+      POSTGRES_PASSWORD: mc_password
+    volumes:
+      - "./pocketmine/data/worlds:/pocketmine/worlds/"   # Save les mondes persistants
+      - "./pocketmine/data/players:/pocketmine/players/" # Save les données des joueurs
+    depends_on:
+      - postgres
+
+  # Service PostgreSQL
+  postgres:
+    image: postgres:13
+    container_name: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: mc_server
+      POSTGRES_USER: mc_user
+      POSTGRES_PASSWORD: mc_password
+    volumes:
+      - "./postgres:/var/lib/postgresql/data" # Volume pour stocker les données de la base de données
+
+  # Interface graphique pour PostgreSQL (pgAdmin)
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin
+    ports:
+      - "5050:80" # Expose l'interface web sur le port 5050
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com # Identifiant de connexion
+      PGADMIN_DEFAULT_PASSWORD: admin       # Mot de passe de connexion
+    depends_on:
+      - postgres
+
+  nextjs:
+    build: ./web
+    ports:
+      - "3000:3000"
+    environment:
+      - DB_URL=postgres://mc_user:mc_password@postgres:5432/mc_server
+    depends_on:
+      - postgres
