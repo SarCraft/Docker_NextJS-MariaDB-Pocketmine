@@ -29,7 +29,8 @@ services:
       POSTGRES_USER: mc_user
       POSTGRES_PASSWORD: mc_password
     volumes:
-      - "./postgres:/var/lib/postgresql/data" # Volume pour stocker les données de la base de données
+      - "./postgresql.conf:/etc/postgresql.conf" # Configuration de PostgreSQL
+      - "./pg-data:/var/lib/postgresql/data" # Sauvegarde des données de PostgreSQL
 
   # Interface graphique pour PostgreSQL (pgAdmin)
   pgadmin:
