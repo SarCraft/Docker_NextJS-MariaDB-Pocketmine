@@ -1,3 +1,0 @@
-CREATE DATABASE mc_server;
-CREATE USER mc_user WITH ENCRYPTED PASSWORD 'mc_password';
-GRANT ALL PRIVILEGES ON DATABASE mc_server TO mc_user;
